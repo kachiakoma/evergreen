@@ -1,0 +1,19 @@
+{% extends 'header.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block body %}
+
+<br>
+<h4 class='form-signin-heading'>Create New User</h4>
+<br>
+<form class='form-signin' method='POST'>
+  <div>
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.email) }}
+    {{ wtf.form_field(form.username) }}
+    {{ wtf.form_field(form.password) }}
+    <button class='btn-lh btn-primary btn-block' type='submit'>Submit</button>
+</div>
+</form>
+
+{% endblock %}

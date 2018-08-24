@@ -1,0 +1,104 @@
+{% extends 'header.html' %}
+
+{% block body %}
+
+<div class="header clearfix">
+  <nav>
+    <ul class="nav nav-pills float-right">
+      <li class="nav-item">
+        <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/charts">Charts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/light">Light</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/panel">Admin</a>
+      </li>
+    </ul>
+  </nav>
+
+  <h3 class="text-muted">Dashboard</h3>
+
+</div>
+
+<div class="ui-40">
+<!-- Weather Block -->
+<div class="weather">
+  <!-- Heading -->
+  <h2><i class="fa fa-cube lblue"></i>Container Climate</h2>
+  <!-- Today's Climate -->
+  <h3 id="date">000</h3>
+  <div class="clearfix"></div>
+  <h1><i class="wi wi-day-cloudy lblue"></i> <span id="temp_value">000</span>&deg;F&nbsp;</h1>
+  <!-- Today report -->
+  <h4></h4>
+  <span class="w-dtls">Real-time Sensor Data</span>
+  <span class="t-report">
+    <i class="fa fa-tint lblue"></i> <span id="humidity_value">000</span>&#37;
+    <i class="fa fa-cloud lblue"></i> <span id="pressure_value">000</span>kPa&nbsp;
+    <i class="fa fa-flag lblue"></i> <span id="airflow_value">000</span>m/s&nbsp;
+    <i class="wi wi-day-sunny lblue"></i> <span id="intensity_value">000</span>Lux&nbsp;
+  </span>
+  <div class="week-report">
+    <ul class="list-unstyled">
+      <li>
+        <div class="report-item">
+          <i class="fa fa-leaf lblue"></i>
+          <span class="w-dtls">Project Evergreen DAK</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+<script>
+  var dataSource = new EventSource("{{ url_for('climate') }}");
+  dataSource.onmessage = function(e) {
+    var list = e.data;
+    list = JSON.parse("[" + list + "]");
+    $("#temp_value").text(list[0]);
+    $("#humidity_value").text(list[1]);
+    $("#pressure_value").text(list[2]);
+    $("#airflow_value").text(list[3]);
+    $("#intensity_value").text(list[4]);
+  }
+</script>
+<script>
+  var currentDate = new Date();
+
+  var weekday = new Array(7);
+  weekday[0] = "Sun";
+  weekday[1] = "Mon";
+  weekday[2] = "Tues";
+  weekday[3] = "Wed";
+  weekday[4] = "Thurs";
+  weekday[5] = "Fri";
+  weekday[6] = "Sat";
+
+  var month = new Array(12);
+  month[0] = "January";
+  month[1] = "February";
+  month[2] = "March";
+  month[3] = "April";
+  month[4] = "May";
+  month[5] = "June";
+  month[6] = "July";
+  month[7] = "August";
+  month[8] = "September";
+  month[9] = "October";
+  month[10] = "November";
+  month[11] = "December";
+
+  var day = weekday[currentDate.getDay()];
+  var month = month[currentDate.getMonth()];
+  var date = currentDate.getDate();
+  var year = currentDate.getFullYear();
+
+  var fullDate = day + " " + month + " " + date + ", " + year;
+  $("#date").text(fullDate);
+</script>
+
+{% endblock %}

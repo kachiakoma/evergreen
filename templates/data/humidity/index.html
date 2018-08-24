@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>IGE HUMIDITY</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+
+	<script type='text/javascript'>
+		$(document).ready(function() {
+
+			var options = {
+				chart: {
+          renderTo: 'container',
+          type: 'spline',
+          inverted: false
+				},
+				title: {
+					text: 'Humidity Sensor Data'
+				},
+        subtitle: {
+            text: 'Relative Humidity (%)'
+        },
+				xAxis: {
+            type: 'datetime',
+            title: {
+                enabled: true,
+                text: 'Time'
+            },
+            labels: {
+                formatter: function () {
+                  return Highcharts.dateFormat('%H:%M', this.value, 1);
+                }
+            },
+            maxPadding: 0.05,
+            showLastLabel: true
+        },
+				yAxis: {
+            title: {
+                text: 'Humidity'
+            },
+            labels: {
+                formatter: function () {
+                    return this.value + ' %';
+                }
+            },
+            lineWidth: 2
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            formatter: function() {
+                return  '<br/><b>' + this.series.name +'</b><br/><br/>' +
+                    Highcharts.dateFormat('[%m/%d/%Y] %a %H:%M',
+                                          new Date(this.x))
+                + ' - ' + '<b>' + this.y + '</b>' + ' %';
+            }
+
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    enable: false
+                }
+            }
+        },
+				series: [
+          {
+            name: 'Humidity'
+
+          }
+        ]
+			};
+			// Load the data from the JSON file
+			options.series[0].data = JSON.parse('{{ data | tojson | safe }}');
+			var chart = new Highcharts.Chart(options);
+
+      // Set refresh interval
+			setInterval(function(){
+				options.series[0].data = JSON.parse('{{ data | tojson | safe }}');
+				var chart = new Highcharts.Chart(options);
+				//console.log('Chart updated');
+			}, 30000);
+		});
+	</script>
+</head>
+<body>
+	<div id="container" style="width:70%; height:400px;"></div>
+</body>
+</html>

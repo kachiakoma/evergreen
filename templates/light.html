@@ -1,0 +1,168 @@
+{% extends 'header.html' %}
+
+{% block body %}
+
+<div class="header clearfix">
+  <nav>
+    <ul class="nav nav-pills float-right">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/charts">Charts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/light">Light <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/panel">Admin</a>
+      </li>
+    </ul>
+  </nav>
+
+  <h3 class="text-muted">Light</h3>
+
+</div>
+
+<div class="ui-40">
+<!-- Weather Block -->
+<div class="weather">
+  <!-- Heading -->
+  <h2><i class="fa fa-cube lblue"></i>Light Compensation</h2>
+  <br>
+  <div id="reading"></div>
+  <div style="align:center">
+    <form>
+      <br>
+      <input type="checkbox" id="manual" onclick="checkManual()"/> Manual<br>
+      <input type="checkbox" id="light-bar" onclick="checkLightbar()"/> Light Bar<br>
+    </form>
+    <br>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-10">
+          <input type="range" class="form-control" id="range" min="0" max="255"/>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" id="value"/>
+        </div>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-10">
+          <input type="range" class="form-control" id="range1" min="0" max="255"/>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" id="value1"/>
+        </div>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-10">
+          <input type="range" class="form-control" id="range2" min="0" max="255"/>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" id="value2"/>
+        </div>
+      </div>
+    </div><br>
+</div>
+  <br>
+  <p align="right">
+    <a href="/register">Add User</a>
+    <a> | </a>
+    <a href="/logout">Logout &nbsp;&nbsp;&nbsp;&nbsp;</a>
+  </p>
+  <div class="week-report">
+    <ul class="list-unstyled">
+      <li>
+        <div class="report-item">
+          <i class="fa fa-leaf lblue"></i>
+          <span class="w-dtls">Project Evergreen DAK</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<script>
+  var data = [0,128,128,128,0];
+  var manualA, manualB = 0;
+  var lightbarA, lightbarB = 0;
+  var vl1, vl2, vl3;
+
+  var rg1 = $("#range").val();
+  var rg3 = $("#range1").val();
+  var rg5 = $("#range2").val();
+
+  $("#reading").text("Reading Mode");
+
+  function writeKey(index, value) {
+    data[index] = parseInt(value);
+    array = data;
+    $.post('/led-strip/'+ array);
+  }
+
+  $("#value").val(rg1);
+  $("#range").change(function() {
+    var rg2 = $("#range").val();
+    $("#value").val(rg2);
+    writeKey(1,rg2);
+  });
+  $("#value").keyup(function() {
+    vl1 = $("#value").val();
+    $("#range").val(vl1);
+    writeKey(1,vl1);
+  });
+
+  $("#value1").val(rg3);
+  $("#range1").change(function() {
+    var rg4 = $("#range1").val();
+    $("#value1").val(rg4);
+    writeKey(2,rg4);
+  });
+  $("#value1").keyup(function() {
+    vl2 = $("#value1").val();
+    $("#range1").val(vl2);
+    writeKey(2,vl2);
+  });
+
+  $("#value2").val(rg5);
+  $("#range2").change(function() {
+    var rg6 = $("#range2").val();
+    $("#value2").val(rg6);
+    writeKey(3,rg6);
+  });
+  $("#value2").keyup(function() {
+    vl3 = $("#value2").val();
+    $("#range2").val(vl3);
+    writeKey(3,vl3);
+  });
+
+  function checkManual() {
+    manualA = document.getElementById('manual');
+
+    if (manualA.checked) {
+      manualB = 1;
+      writeKey(0,manualB);
+    } else {
+      manualB = 0;
+      writeKey(0,manualB);
+    }
+  }
+  function checkLightbar() {
+    lightbarA = document.getElementById('light-bar');
+
+    if (lightbarA.checked) {
+      lightbarB = 1;
+      writeKey(4,lightbarB);
+    } else {
+      lightbarB = 0;
+      writeKey(4,lightbarB);
+    }
+  }
+</script>
+{% endblock %}

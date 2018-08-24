@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>DAK Control Panel</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/narrow-jumbotron.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style-40.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/weather-icons.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+    <script
+			  src="https://code.jquery.com/jquery-3.2.1.min.js"
+			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			  crossorigin="anonymous">
+    </script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+    {% block head %}
+
+    {% endblock %}
+    
+  </head>
+  <body>
+    <div class='container'>
+
+      {% block body %}
+
+      {% endblock %}
+
+    </div>
+
+    <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js') }}"><\/script>')</script>
+    <!--
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+    -->
+  </body>
+</html>
